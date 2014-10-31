@@ -40,12 +40,12 @@ function sny_os_redirect() {
 	
 }
 
-function sny_if_android($attr, $content) {
+function sny_if_android() {
 	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 	return stripos($ua, 'android');
 }
 
-function sny_if_ios($attr, $content) {
+function sny_if_ios() {
 	$iPod = stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
 	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
 	$iPad = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
