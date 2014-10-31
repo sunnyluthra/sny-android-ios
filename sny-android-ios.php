@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Android iOs content shortcode
-Description: Show content using shortcode [if-android][/if-android] or [if-ios][/if-ios]
+Plugin Name: Redirect if android or ios
+Description: Redirect to playstore or appstore
 Plugin URI: http://mrova.com
 Author: Sunny Luthra
 Version: 1.0
@@ -24,21 +24,30 @@ License: GPL2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-add_shortcode('if-android', 'sny_if_android');
-add_shortcode('if-ios', 'sny_if_ios');
+
+//Define your playstore and app store link
+define("PLAYSTORE_LINK", "");
+define("APPSTORE_LINK", "");
+
+
+add_action('template_redirect', 'sny_os_redirect');
+function sny_os_redirect() {
+	if(sny_if_android() && PLAYSTORE_LINK){
+		header("Location: " . PLAYSTORE_LINK);
+	}elseif(sny_if_ios() && APPSTORE_LINK){
+		header("Location: ".APPSTORE_LINK);
+	}
+	
+}
 
 function sny_if_android($attr, $content) {
 	$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-	if (stripos($ua, 'android') !== false) {
-		return $content;
-	}
+	return stripos($ua, 'android');
 }
 
 function sny_if_ios($attr, $content) {
-	$iPod   = stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
+	$iPod = stripos($_SERVER['HTTP_USER_AGENT'], "iPod");
 	$iPhone = stripos($_SERVER['HTTP_USER_AGENT'], "iPhone");
-	$iPad   = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
-	if($iPod || $iPhone || $iPad){
-		return $content;
-	}
+	$iPad = stripos($_SERVER['HTTP_USER_AGENT'], "iPad");
+	return $iPod || $iPhone || $iPad ;
 }
